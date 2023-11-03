@@ -184,8 +184,6 @@ def home_online(file_path):
 
 missing_students = []
 
-# selected_template_path = "C:/Users/preet/Documents/MATHNASIUM/functions/files/Template.xlsx"
-
 
 def copy_template(save_path,selected_template_path):
     ''' Creates a copy of the template and creates a file called Appointments'''
