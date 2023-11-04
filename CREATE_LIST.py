@@ -68,8 +68,12 @@ def create_excel_sheet_skype(CLIENT_CREDS_FILE,FILE_ID,output_file_path):
     worksheet = sheet.get_worksheet(0)  # Index 0 is the first worksheet
 
     today= datetime.datetime.now().weekday()
-    start_row = today*28+5
-    end_row = start_row + 25
+    if today == 4 or today == 5:
+        start_row = 117
+        end_row = 142
+    else:
+        start_row = today*28+5
+        end_row = start_row + 25
 
 
     # Use the Google Sheets API to retrieve cell background colors
@@ -112,10 +116,14 @@ def create_excel_sheet_skype(CLIENT_CREDS_FILE,FILE_ID,output_file_path):
 
 
     final_list = []
+    # print(list_student)
 
     for itm in list_student:
             # Extract the time value from the first item in the original list
-        time_value = itm[0][0]
+        if itm == []:
+            time_value = 'empty'
+        else:
+            time_value = itm[0][0]
 
         for name,color in itm[1:]:
             final_list.append([name, color, time_value])
@@ -127,6 +135,20 @@ def create_excel_sheet_skype(CLIENT_CREDS_FILE,FILE_ID,output_file_path):
     # Create a DataFrame from the data
     df = pd.DataFrame(final_list, columns=['Student', 'Color', 'Time'])
 
+
+    # # Define proxy values for colors
+    # color_proxy = {
+    #     '#00ccff': 'Teacher_1',
+    #     '#9fc5e7': 'Teacher_2',
+    #     '#d9ead3': 'Teacher_3',
+    #     '#fce4cd': 'Teacher_4',
+    #     '#ffff00': 'Teacher_5',
+    # }
+
+    # # Replace color codes with proxy values
+    
+
+        # Get unique colors from the DataFrame
     unique_colors = df['Color'].unique()
 
     # Create a color proxy dictionary with numeric values
@@ -342,7 +364,7 @@ def process_file():
 
     log_text.insert(tk.END, "Getting TXT file location\n")
 
-    dictionary = read_config_file('PATH OF TXT')
+    dictionary = read_config_file('C:/Users/preet/Documents/MATHNASIUM/SCHEDULE_MAKER/functions/read_txt/file_text.txt')
     service_account_key_file = dictionary['service_account_key_file']
     folder_id = dictionary['folder_id']
     output_path= dictionary['output_path']+datetime.date.today().strftime('%Y-%m-%d')+'.xlsx'
